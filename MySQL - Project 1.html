@@ -1,0 +1,535 @@
+<!DOCTYPE HTML>
+<!--
+	Alpha by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Dila Safitri MySQL Projects</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+</head>
+
+<body class="is-preload">
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<nav id="nav">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="#Bottom">Contacts</a></li>
+					<li>
+						<a href="#" class="icon solid fa-angle-down">Projects</a>
+						<ul>
+							<li><a href="ProjectMySQL.html">MySQL</a></li>
+							<li><a href="ProjectPython.html">Python</a></li>
+							<li><a href="ProjectTableau.html">Tableau</a></li>
+							<li><a href="ProjectPowerBI.html">Power BI</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="icon solid fa-angle-down">Table of Contents</a>
+						<ul>
+							<li><a href="#Chapter1">Chapter 1 (Introductions)</a></li>
+							<li><a href="#Chapter2">Chapter 2</a></li>
+							<li><a href="#Chapter3">Chapter 3</a></li>
+							<li><a href="#Chapter4">Chapter 4</a></li>
+							<li><a href="#Chapter5">Chapter 5 (Conclusions)</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Main -->
+		<section id="main" class="container">
+			<header>
+				<h2>Project Data Analysis for Retail (DQLab Project)</h2>
+				<p>Sales performance report of DQLab stores</p>
+			</header>
+			<div class="box">
+
+				<span class="image featured"><img src="images/MySQL - Project 1.jpg" alt="" /></span>
+				<id id="Chapter1"></id>
+				<h3><b>I. Introduction</b></h3>
+				<h4><b>Acknowledgements</b></h4>
+				<p>
+					DQLab is an Online Data Science Learning Center that produces data practitioners who can make an
+					impact. Nelda Ampulembang Parenta instructed this project to build analytical skills and apply
+					knowledge to industry problems. I could complete this project by utilizing the SQL live editor on
+					the DQLab website. To better understand the project, I decided to revamp the project using MySQL and
+					the Dbeaver application. As a result, I modified some of the queries to ensure a more refined
+					output.
+				</p>
+				<h4><b>Datasets Brief</b></h4>
+				<p>
+					This dataset comprises sales data for the DQLab Store from 2009 to 2012. The data covers three
+					product categories: office supplies, technology, and furniture, each with several subcategories. The
+					company offers discounts in the form of promotions. For this project, the table name to be used is
+					"<b>dqlab_sales_store</b>" that contains 5500 rows and ten columns,
+					with details on each column provided below:
+					<ol>
+					<li>order_id: an unique order number</li>
+					<li>order_status: indicates whether the order has been finished or returned</li>
+					<li>customer: customer name</li>
+					<li>order_date: the date when the order was made</li>
+					<li>order_quantity: the quantity of the product ordered</li>
+					<li>sales: the total sales generated from a specific order in Indonesian Rupiah (IDR) currency</li>
+					<li>discount: the percentage of the discount offered</li>
+					<li>discount_value: the discount value in Indonesian Rupiah (IDR) currency</li>
+					<li>product_category : the main product category</li>
+					<li>product_sub_category : the subcategory under the product category.</li>
+					</ol>
+				</p>
+				<div class="row">
+					<div class="row-6 row-12-mobilep">
+						<id id="Chapter2"></id>
+						<h3><b>II. DQLab Store Overall Performance</b></h3>
+						<h4><b>Overall Performance by Year</b></h4>
+						<p>To get an overview of our annual sales performance, we need to create an SQL query to count
+							the total number of sales and orders from 2009 to 2012. By leveraging this information, we
+							will be empowered to make informed decisions to drive our business forward. With valuable
+							insights gained by analyzing this sales data, the team can achieve new heights of success.
+						</p>
+						<h4>Query</h4>
+						<pre>
+SELECT
+	REPLACE(YEAR(t1.order_date),',','') AS years,
+	SUM(t1.sales) AS sales,
+	COUNT(t1.sales) AS number_of_order
+FROM dqlab_sales_store AS t1
+WHERE
+	t1.order_status='order finished'
+GROUP by years
+ORDER BY years</pre>
+					</div>
+				</div>
+				<h4>Output</h4>
+				<div class="table-wrapper">
+					<table>
+						<tr>
+							<th>years</th>
+							<th>sales</th>
+							<th>number_of_order</th>
+						</tr>
+						<tr class="odd">
+							<td>2009</td>
+							<td>4,613,872,681</td>
+							<td>1,244</td>
+						</tr>
+						<tr>
+							<td>2010</td>
+							<td>4,059,100,607</td>
+							<td>1,248</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>4,112,036,186</td>
+							<td>1,178</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>4,482,983,158</td>
+							<td>1,254</td>
+						</tr>
+					</table>
+					<h4><b>Overall Performance by Product Sub Category</b></h4>
+					<p>
+						SQL queries are a powerful tool to get a detailed understanding of sales data for different
+						product subcategories during specific periods. This information can help businesses make
+						informed decisions to improve overall revenue. The following query can be used to obtain the
+						total sales based on product subcategories for sales that took place in 2011 and 2012.
+					</p>
+					<h4>Query</h4>
+					<pre>
+SELECT <br>	REPLACE(YEAR(t1.order_date),',','') AS years,<br>	t1.product_sub_category,<br>	SUM(t1.sales) AS sales<br>FROM dqlab_sales_store AS t1<br>WHERE<br>	t1.order_status='order finished' AND<br>	(YEAR(t1.order_date)=2011 or YEAR(t1.order_date)=2012)<br>GROUP BY t1.product_sub_category,years <br>ORDER BY years, sales DESC</pre>
+				</div>
+				<h4>Output</h4>
+				<div class="table-wrapper">
+					<table>
+						<tr>
+							<th>years</th>
+							<th>product_sub_category</th>
+							<th>sales</th>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Chairs &amp; Chairmats</td>
+							<td>622,962,720</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Office Machines</td>
+							<td>545,856,280</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Tables</td>
+							<td>505,875,008</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Copiers &amp; Fax</td>
+							<td>404,074,080</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Telephones &amp; Communication</td>
+							<td>392,194,658</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Binders &amp; Binder Accessories</td>
+							<td>298,023,200</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Storage &amp; Organization</td>
+							<td>285,991,820</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Appliances</td>
+							<td>272,630,020</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Computer Peripherals</td>
+							<td>232,677,960</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Bookcases</td>
+							<td>169,304,620</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Office Furnishings</td>
+							<td>160,471,500</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Paper</td>
+							<td>111,080,380</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Pens &amp; Art Supplies</td>
+							<td>43,093,800</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Envelopes</td>
+							<td>36,463,900</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Labels</td>
+							<td>15,607,780</td>
+						</tr>
+						<tr>
+							<td>2011</td>
+							<td>Scissors, Rulers &amp; Trimmers</td>
+							<td>12,638,340</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>Rubber Bands</td>
+							<td>3,090,120</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Office Machines</td>
+							<td>811,427,140</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Chairs &amp; Chairmats</td>
+							<td>654,168,740</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Telephones &amp; Communication</td>
+							<td>422,287,514</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Tables</td>
+							<td>388,993,784</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Binders &amp; Binder Accessories</td>
+							<td>363,879,200</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Storage &amp; Organization</td>
+							<td>356,714,140</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Computer Peripherals</td>
+							<td>308,014,340</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Copiers &amp; Fax</td>
+							<td>292,489,800</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Appliances</td>
+							<td>266,131,100</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Office Furnishings</td>
+							<td>178,927,480</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Bookcases</td>
+							<td>159,984,680</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Paper</td>
+							<td>126,896,160</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Envelopes</td>
+							<td>58,629,280</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Pens &amp; Art Supplies</td>
+							<td>43,818,480</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Scissors, Rulers &amp; Trimmers</td>
+							<td>36,776,400</td>
+						</tr>
+						<tr class="odd">
+							<td>2012</td>
+							<td>Labels</td>
+							<td>10,007,040</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>Rubber Bands</td>
+							<td>3,837,880</td>
+						</tr>
+					</table>
+					<div class="row-6 row-12-mobilep">
+						<id id="Chapter3"></id>
+						<h3><b>III. DQLab Store Promotion Effectiveness and Efficiency</b></h3>
+						<h4><b>Promotion Effectiveness and Efficiency by Years</b></h4>
+						<p>This section aims to evaluate the effectiveness and efficiency of the promotions implemented.
+							To measure this, we will use the Burn Rate Percentage, which involves comparing the total
+							value of the promotions issued with the sales obtained. DQLab has set a target Burn Rate of
+							no more than 4.5%. The calculation for the Burn Rate Percentage is as follows:
+						</p>
+						<p>
+							<center> <math xmlns="http://www.w3.org/1998/Math/MathML">
+									<mi>b</mi>
+									<mi>u</mi>
+									<mi>r</mi>
+									<mi>n</mi>
+									<mo>_</mo>
+									<mi>r</mi>
+									<mi>a</mi>
+									<mi>t</mi>
+									<mi>e</mi>
+									<mo>_</mo>
+									<mi>p</mi>
+									<mi>e</mi>
+									<mi>r</mi>
+									<mi>c</mi>
+									<mi>e</mi>
+									<mi>n</mi>
+									<mi>t</mi>
+									<mi>a</mi>
+									<mi>g</mi>
+									<mi>e</mi>
+									<mo>=</mo>
+									<mfrac>
+										<mrow>
+											<mi>t</mi>
+											<mi>o</mi>
+											<mi>t</mi>
+											<mi>a</mi>
+											<mi>l</mi>
+											<mo>&#xA0;</mo>
+											<mi>d</mi>
+											<mi>i</mi>
+											<mi>s</mi>
+											<mi>c</mi>
+											<mi>o</mi>
+											<mi>u</mi>
+											<mi>n</mi>
+											<mi>t</mi>
+										</mrow>
+										<mrow>
+											<mi>t</mi>
+											<mi>o</mi>
+											<mi>t</mi>
+											<mi>a</mi>
+											<mi>l</mi>
+											<mo>&#xA0;</mo>
+											<mi>s</mi>
+											<mi>a</mi>
+											<mi>l</mi>
+											<mi>e</mi>
+											<mi>s</mi>
+										</mrow>
+									</mfrac>
+									<mo>&#xd7;</mo>
+									<mn>100</mn>
+								</math>
+							</center>
+						</p>
+						<p>We will be creating a table to calculate the total sales (sales) and total discount
+							(promotion_value) based on years and then using them to calculate the burn rate percentage
+							(burn_rate_percentage) with the query and the final output down below.</p>
+						<h4>Query</h4>
+						<pre>
+SELECT<br>	REPLACE(YEAR(t1.order_date),',','') AS years,<br>	SUM(t1.sales) AS sales,<br>	SUM(t1.discount_value) AS promotion_value,<br>	ROUND((SUM(t1.discount_value)/SUM(t1.sales))*100,2) AS burn_rate_percentage<br>	FROM dqlab_sales_store AS t1<br>WHERE<br>	t1.order_status='order finished'<br>GROUP BY 1<br>ORDER BY 1
+				</div>
+				<h4>Output</h4>
+				<div class="table-wrapper">
+					<table>
+						<tr>
+							<th>years</th>
+							<th>sales</th>
+							<th>promotion_value</th>
+							<th>burn_rate_percentage</th>
+						</tr>
+						<tr class="odd">
+							<td>2009</td>
+							<td>4,613,872,681</td>
+							<td>214,330,327</td>
+							<td>4.65</td>
+						</tr>
+						<tr>
+							<td>2010</td>
+							<td>4,059,100,607</td>
+							<td>197,506,939</td>
+							<td>4.87</td>
+						</tr>
+						<tr class="odd">
+							<td>2011</td>
+							<td>4,112,036,186</td>
+							<td>214,611,556</td>
+							<td>5.22</td>
+						</tr>
+						<tr>
+							<td>2012</td>
+							<td>4,482,983,158</td>
+							<td>225,867,642</td>
+							<td>5.04</td>
+						</tr>
+					</table>
+					<h4><b>Promotion Effectiveness and Efficiency by Product Sub Category</b></h4>
+					<p>
+						This section will analyze the effectiveness and efficiency of the promotions brought out so far, compared to the previous section. However, some columns must be added, namely product_sub_category and product_category. The output that should be produced is as follows:
+					</p>
+					<h4>Query</h4>
+					<pre>
+SELECT<br>	REPLACE(YEAR(t1.order_date),',','') AS years,<br>	t1.product_sub_category AS product_sub_category,<br>	t1.product_category AS product_category,<br>	SUM(t1.sales) AS sales,<br>	SUM(t1.discount_value) AS promotion_value,<br>	ROUND((SUM(t1.discount_value)/SUM(t1.sales))*100,2) AS burn_rate_percentage<br>FROM dqlab_sales_store AS t1<br>WHERE<br>	t1.order_status='order finished' AND YEAR(t1.order_date) = 2012<br>GROUP BY years, product_sub_category, product_category<br>ORDER BY sales DESC				
+</pre><h4>Output</h4>
+					<div class="table-wrapper">
+						<table>
+							<tr>
+								<th>years</th><th>product_sub_category</th><th>product_category</th><th>sales</th><th>promotion_value</th><th>burn_rate_percentage</th></tr><tr class="odd"><td>2012</td><td>Office Machines</td><td>Technology</td><td>811,427,140</td><td>46,616,695</td><td>5.75</td></tr>
+								<tr><td>2012</td><td>Chairs &amp; Chairmats</td><td>Furniture</td><td>654,168,740</td><td>26,623,882</td><td>4.07</td></tr>
+								<tr class="odd"><td>2012</td><td>Telephones &amp; Communication</td><td>Technology</td><td>422,287,514</td><td>18,800,188</td><td>4.45</td></tr>
+								<tr><td>2012</td><td>Tables</td><td>Furniture</td><td>388,993,784</td><td>16,348,689</td><td>4.2</td></tr>
+								<tr class="odd"><td>2012</td><td>Binders &amp; Binder Accessories</td><td>Office Supplies</td><td>363,879,200</td><td>22,338,980</td><td>6.14</td></tr>
+								<tr><td>2012</td><td>Storage &amp; Organization</td><td>Office Supplies</td><td>356,714,140</td><td>18,802,166</td><td>5.27</td></tr>
+								<tr class="odd"><td>2012</td><td>Computer Peripherals</td><td>Technology</td><td>308,014,340</td><td>15,333,293</td><td>4.98</td></tr>
+								<tr><td>2012</td><td>Copiers &amp; Fax</td><td>Technology</td><td>292,489,800</td><td>14,530,870</td><td>4.97</td></tr>
+								<tr class="odd"><td>2012</td><td>Appliances</td><td>Office Supplies</td><td>266,131,100</td><td>14,393,300</td><td>5.41</td></tr>
+								<tr><td>2012</td><td>Office Furnishings</td><td>Furniture</td><td>178,927,480</td><td>8,233,849</td><td>4.6</td></tr>
+								<tr class="odd"><td>2012</td><td>Bookcases</td><td>Furniture</td><td>159,984,680</td><td>10,024,365</td><td>6.27</td></tr>
+								<tr><td>2012</td><td>Paper</td><td>Office Supplies</td><td>126,896,160</td><td>6,224,694</td><td>4.91</td></tr>
+								<tr class="odd"><td>2012</td><td>Envelopes</td><td>Office Supplies</td><td>58,629,280</td><td>2,334,321</td><td>3.98</td></tr>
+								<tr><td>2012</td><td>Pens &amp; Art Supplies</td><td>Office Supplies</td><td>43,818,480</td><td>2,343,501</td><td>5.35</td></tr>
+								<tr class="odd"><td>2012</td><td>Scissors, Rulers &amp; Trimmers</td><td>Office Supplies</td><td>36,776,400</td><td>2,349,280</td><td>6.39</td></tr>
+								<tr><td>2012</td><td>Labels</td><td>Office Supplies</td><td>10,007,040</td><td>452,245</td><td>4.52</td></tr>
+								<tr class="odd"><td>2012</td><td>Rubber Bands</td><td>Office Supplies</td><td>3,837,880</td><td>117,324</td><td>3.06</td></tr>
+						</table>
+						<id id="Chapter4"></id>
+						<h3><b>IV. Customer Analytics</b></h3>
+						<h4><b>Customers Transactions per Year</b></h4>
+						<p>DQLab Store needs to know the annual number of customers who made transactions from 2009 to 2012 to provide their customers with the best shopping experience. This information will enable them to better understand our customers' needs and preferences and, ultimately, improve their products and services.
+						</p>
+						<h4>Query</h4>
+						<pre>
+SELECT<br>	REPLACE(YEAR(t1.order_date),',','') AS years,<br>	COUNT(DISTINCT t1.customer) AS number_of_customer<br>FROM dqlab_sales_store AS t1<br>WHERE<br>	t1.order_status = 'order finished'<br>GROUP BY 1<br>ORDER BY 1</pre>
+					</div>
+				</div>
+				<h4>Output</h4>
+				<div class="table-wrapper">
+					<table>
+						<tr>
+							<th>years</th><th>number_of_customer</th></tr><tr class="odd"><td>2009</td><td>585</td></tr>
+							<tr><td>2010</td><td>593</td></tr>
+							<tr class="odd"><td>2011</td><td>581</td></tr>
+							<tr><td>2012</td><td>594</td></tr>
+					</table>
+					<id id="Chapter5"></id>
+						<h3><b>V. Conclusions</b></h3>
+						<p>The sales performance between 2009 and 2012 fluctuated. The highest sales level was achieved in 2009, with 1,244 orders and sales amounting to 4,613,872,681 (IDR). In 2011 and 2012, the Office Machines category generated the highest sales, 811,427,140, followed by Chairs and Chairmats, with 654,168,740 (IDR) sales. It is recommended to promote the Office Machines category for maximum benefits.
+						</p>
+						<p></p><p>
+							The effectiveness and efficiency of promotions from 2009–2012 showed a failure to meet target standards (4.5%) each year, with a Burn Rate of 4.65% - 5.04% by comparing the total value of promotions issued to the total sales obtained. In 2012, the Office Machines category had a higher burn rate of 5.75% compared to Chairs and Chairmats, which only had 4.07%.
+						</p>
+						<p></p><p>
+							Although the Overall Performance did not show significant growth, the number of customers who transacted at the DQLab Store increased slightly from 585 in 2009 to 594 in 2012.
+						</p>
+					</div>
+				</div>
+				</div>
+			</div>
+	</section>
+
+
+	<!-- Footer -->
+	<footer id="footer">
+		<ul class="icons">
+			<id id="Bottom"></id>
+			<li><a href="https://www.linkedin.com/in/dila-safitri/" class="icon brands fa-linkedin"><span
+						class="label">Linkedin</span></a></li>
+			<li><a href="https://github.com/dilasafitri008" class="icon brands fa-github"><span
+						class="label">Github</span></a></li>
+			<li><a href="mailto:dilasafitri080101@gmail.com" class="icon solid fa-envelope"></a></li>
+		</ul>
+		<ul class="copyright">
+			<li>&copy; Untitled. All rights reserved.</li>
+			<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+		</ul>
+	</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+
+</html>
